@@ -54,12 +54,6 @@ jobs:
         working-directory: platform/helm
         run: terraform init
 
-      - name: Import existing releases into state
-        working-directory: platform/helm
-        run: |
-          terraform state list | grep -q helm_release.nginx_ingress || terraform import helm_release.nginx_ingress ingress-nginx/ingress-nginx
-          terraform state list | grep -q helm_release.cert_manager || terraform import helm_release.cert_manager cert-manager/cert-manager
-
       - name: Terraform Validate
         working-directory: platform/helm
         run: terraform validate
