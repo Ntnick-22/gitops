@@ -6,20 +6,11 @@ resource "helm_release" "nginx_ingress" {
   create_namespace = true
   version          = var.nginx_ingress_version
 
-  set {
-    name  = "controller.replicaCount"
-    value = "1"
-  }
-
-  set {
-    name  = "controller.service.type"
-    value = "LoadBalancer"
-  }
-
-  set {
-    name  = "controller.service.externalTrafficPolicy"
-    value = "Local"
-  }
+  set = [
+    { name = "controller.replicaCount", value = "1" },
+    { name = "controller.service.type", value = "LoadBalancer" },
+    { name = "controller.service.externalTrafficPolicy", value = "Local" },
+  ]
 }
 
 resource "helm_release" "cert_manager" {
@@ -30,8 +21,7 @@ resource "helm_release" "cert_manager" {
   create_namespace = true
   version          = var.cert_manager_version
 
-  set {
-    name  = "crds.enabled"
-    value = "true"
-  }
+  set = [
+    { name = "crds.enabled", value = "true" },
+  ]
 }
