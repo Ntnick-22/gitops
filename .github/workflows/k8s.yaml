@@ -26,11 +26,16 @@ jobs:
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
+      - name: Install kubectl + kubelogin
+        run: az aks install-cli
+
       - name: Get AKS credentials
-        uses: azure/aks-set-context@v3
-        with:
-          resource-group: shared-tf-rg
-          cluster-name: shared-aks
+        run: |
+          az aks get-credentials \
+            --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} \
+            --name ${{ secrets.AZURE_AKS_NAME }} \
+            --overwrite-existing
+          kubelogin convert-kubeconfig -l azurecli
 
       - name: Apply cluster-wide resources
         run: kubectl apply -f platform/apps/cluster-issuer.yaml
