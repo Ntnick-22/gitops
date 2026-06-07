@@ -1,0 +1,28 @@
+replicaCount: 2
+
+image:
+  repository: nginxdemos/hello
+  tag: "0.3"
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 80
+
+ingress:
+  enabled: true
+  className: traefik
+  host: frontend.nt-nick.link
+  clusterIssuer: letsencrypt-prod
+  tlsSecretName: frontend-prod-tls
+
+configmap:
+  data:
+    APP_ENV: production
+    APP_NAME: frontend
+
+hpa:
+  enabled: true
+  minReplicas: 2
+  maxReplicas: 5
+  cpuUtilization: 70

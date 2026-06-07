@@ -1,0 +1,28 @@
+replicaCount: 1
+
+image:
+  repository: sharedaksnick.azurecr.io/backend
+  tag: "v1.0.1"
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 80
+
+ingress:
+  enabled: false
+  className: traefik
+  host: ""
+  clusterIssuer: letsencrypt-prod
+  tlsSecretName: backend-dev-tls
+
+configmap:
+  data:
+    APP_ENV: development
+    APP_NAME: backend
+
+hpa:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 2
+  cpuUtilization: 70

@@ -1,0 +1,28 @@
+replicaCount: 2
+
+image:
+  repository: nginx
+  tag: "1.24-alpine"
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 80
+
+ingress:
+  enabled: false
+  className: traefik
+  host: ""
+  clusterIssuer: letsencrypt-prod
+  tlsSecretName: worker-prod-tls
+
+configmap:
+  data:
+    APP_ENV: production
+    APP_NAME: worker
+
+hpa:
+  enabled: true
+  minReplicas: 2
+  maxReplicas: 4
+  cpuUtilization: 80

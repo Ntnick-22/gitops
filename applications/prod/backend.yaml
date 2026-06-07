@@ -1,23 +1,24 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: web-app
+  name: backend-prod
   namespace: argocd
 spec:
   project: default
   source:
     repoURL: https://github.com/Ntnick-22/gitops.git
     targetRevision: main
-    path: helm-charts/web-app
+    path: helm-charts/backend
     helm:
       valueFiles:
-        - values.yaml
+        - values-prod.yaml
   destination:
-    server: https://kubernetes.default.svc
-    namespace: web-app
+    name: in-cluster
+    namespace: prod
   syncPolicy:
     automated:
       prune: true
-      selfHeal: true
+      selfHeal: false
     syncOptions:
       - CreateNamespace=true
+      - ApplyOutOfSyncOnly=true

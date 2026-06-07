@@ -1,0 +1,24 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: frontend-uat
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/Ntnick-22/gitops.git
+    targetRevision: main
+    path: helm-charts/frontend
+    helm:
+      valueFiles:
+        - values-uat.yaml
+  destination:
+    name: in-cluster
+    namespace: uat
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: false
+    syncOptions:
+      - CreateNamespace=true
+      - ApplyOutOfSyncOnly=true
