@@ -1,8 +1,8 @@
 replicaCount: 1
 
 image:
-  repository: nginx
-  tag: "1.26-alpine"
+  repository: sharedaksnick.azurecr.io/backend
+  tag: "v1.0.0"
   pullPolicy: IfNotPresent
 
 service:
