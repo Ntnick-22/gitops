@@ -1,0 +1,8 @@
+helm:
+  parameters:
+  - name: image.repository
+    value: sharedaksnick.azurecr.io/backend
+    forcestring: true
+  - name: image.tag
+    value: v1.0.1
+    forcestring: true
