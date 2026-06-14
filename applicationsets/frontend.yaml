@@ -1,0 +1,34 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: frontend
+  namespace: argocd
+spec:
+  generators:
+    - list:
+        elements:
+          - env: dev
+          - env: uat
+          - env: prod
+  template:
+    metadata:
+      name: "frontend-{{env}}"
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/Ntnick-22/gitops.git
+        targetRevision: main
+        path: helm-charts/frontend
+        helm:
+          valueFiles:
+            - values-{{env}}.yaml
+      destination:
+        name: in-cluster
+        namespace: "{{env}}"
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: false
+        syncOptions:
+          - CreateNamespace=true
+          - ApplyOutOfSyncOnly=true
